@@ -3,10 +3,10 @@ from pages.base_page import LONG_TIMEOUT, SHORT_TIMEOUT
 from pages.student_persona.student_persona_page import CARD_TIMEOUT, StudentPersonaPage
 from utils.logger import log
 
-# The mentor the Career Buddy scenario books with. The previous value
-# ("Anand") no longer exists on dev - searching for it returned no mentors at
-# all, whatever filters were applied.
-MENTOR_NAME = "Leela"
+# The mentor the Career Buddy scenario books with. "Anand" exists on prod;
+# on dev this account is absent, so a dev run needs a mentor that exists there
+# (e.g. "Leela") or the search returns no mentors at all.
+MENTOR_NAME = "Anand"
 SESSION_OUTCOME = "I need help in identifying right path"
 
 

@@ -18,6 +18,7 @@ Feature: Student Persona
     Then user clicks on messages and discussions
     Then user clicks on learning progress
     Then user clicks on settings
+
   Scenario: Validate Genie
     Given user is on the home page
     Then user validates genie
@@ -36,33 +37,89 @@ Feature: Student Persona
     Then user clicks on reset button
     Then user clicks on jobs connect applied status card
     Then user clicks on applied jobs button and validates the applied job card
+
   Scenario: Validate Forums
     Given user is on the home page
     Then user navigates to home page
     Then user clicks on forums card
     Then user validates the my forums header
     Then user clicks on view forum button
-  # The application merged the separate Courses and Programs screens into one
-  # "Programs & Courses" screen and redesigned the course detail page: the
-  # Overview/Course Content/Performance tabs and the View Details button were
-  # replaced by a certificate-progress panel and lesson accordions.
-  Scenario: Validate Courses
+  Scenario: Validate Courses and Programs
     Given user is on the home page
-    Then user navigates to home page
-    Then user validates the courses In Progress and Completed tabs
-    Then user clicks on the courses In Progress tab
-    Then user validates enrolled course card
-    Then user opens the first course
-    Then user validates the course detail sections
-    Then user expands the first lesson section
-    Then user navigates back to the courses list
-    Then user clicks on the courses Completed tab
-    Then user opens the first course
-    Then user validates the assessment score
-    Then user navigates back to the courses list
-    Then user validates courses recommended by institute
-    Then user validates recommended course card
-    Then user validates courses offered by wadhwani foundation
+    Then user navigates to Programs & Courses page
+    # Validate In Progress and Completed tabs
+    Then user validates the In Progress and Completed tabs
+    # Validate In Progress Course
+    When user clicks on the In Progress tab
+    Then user validates the enrolled course cards
+    When user opens the "QA-Emp skill Test-V2-Open" course
+
+    # Validate Course Detail Page
+    Then user validates the course detail page
+    Then user validates the Pre Video icon
+    Then user clicks on the Pre Video icon
+    Then user validates the Pre Video popup
+    Then user closes the Pre Video popup
+
+    Then user validates the Collaborate icon
+    Then user clicks on the Collaborate icon
+    Then user validates the Collaborate popup
+    Then user closes the Collaborate popup
+
+    Then user validates the Assessments icon
+    Then user clicks on the Assessments icon
+    Then user validates the Assessments popup
+    Then user closes the Assessments popup
+
+    Then user validates the Post Video icon
+    Then user clicks on the Post Video icon
+    Then user validates the Post Video popup
+    Then user closes the Post Video popup
+
+    # Navigate back to Courses & Programs
+    Then user navigates back to the Programs & Courses list
+
+    # Validate Completed Courses
+    When user clicks on the Completed tab
+    Then user validates the completed course cards
+
+    # Validate Resume Course type
+    Then user validates the completed course with Resume Course option
+
+    # Validate Certificate type
+    Then user validates the completed course with Certificate download option
+
+    # Validate Scorecard and Certificate type
+    Then user validates the completed course with Scorecard and Certificate options
+
+    # Validate Institute Recommendations
+    Then user validates Courses & Programs recommended by institute
+    Then user validates the recommended course and program cards
+
+    # Validate Wadhwani Foundation Recommendations
+    Then user validates Courses & Programs recommended by Wadhwani Foundation
+    Then user validates the recommended course and program cards
+
+    # Validate Join a Batch
+    Then user validates the Join a batch section
+
+  # Scenario: Validate Courses & programs
+  #   Given user is on the home page
+  #   Then user navigates to home page
+  #   Then user validates the courses In Progress and Completed tabs
+  #   Then user clicks on the courses In Progress tab
+  #   Then user validates enrolled course card
+  #   Then user opens the first course
+  #   Then user validates the course detail sections
+  #   Then user expands the first lesson section
+  #   Then user navigates back to the courses list
+  #   Then user clicks on the courses Completed tab
+  #   Then user opens the first course
+  #   Then user validates the assessment score
+  #   Then user navigates back to the courses list
+  #   Then user validates courses recommended by institute
+  #   Then user validates recommended course card
+  #   Then user validates courses offered by wadhwani foundation
   Scenario: Validate Career Buddy
     Given user is on the home page
     Then user navigates to home page
@@ -139,16 +196,16 @@ Feature: Student Persona
     Then user validates check button 
   # Programs now live on the same merged "Programs & Courses" screen as courses;
   # the old Enroll -> Confirm/Cancel modal no longer exists.
-  Scenario: Validate Programs
-    Given user is on the home page
-    Then user navigates to home page
-    Then user validates the programs In Progress and Completed tabs
-    Then user clicks on the programs In Progress tab
-    Then user validates program card
-    Then user validates recommended by institue header
-    Then user validates recommended program card
-    Then user validates offered by wadhwani foundation header
-    Then user validates join a batch section
+  # Scenario: Validate Programs
+  #   Given user is on the home page
+  #   Then user navigates to home page
+  #   Then user validates the programs In Progress and Completed tabs
+  #   Then user clicks on the programs In Progress tab
+  #   Then user validates program card
+  #   Then user validates recommended by institue header
+  #   Then user validates recommended program card
+  #   Then user validates offered by wadhwani foundation header
+  #   Then user validates join a batch section
   Scenario: Messages and discussions validation
     Then user clicks on Accounts menu
     Then user clicks on Messages & Discussions

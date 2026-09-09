@@ -8,7 +8,8 @@ class PersonalPitchTrainerLocators:
     VIEW_PITCH_BUTTON = "//p[text()='View Pitch']"
     VIDEO_PLAY_BUTTON = "//video[text()='Your browser does not support the video tag.']"
     VIDEO_CLOSE_BUTTON = "//span[@class='ant-modal-close-x']"
-    SHARE_PITCH_BUTTON = "//div[@class='pre-video-feedback-heading']//button[2]"
+    SHARE_PITCH_BUTTON = ("//p[normalize-space()='View Pitch']/ancestor::button"
+                          "/following-sibling::button[1]")
     COPY_SHARE_BUTTON = "//img[@class='wf_image  no-js-share-button-copy']"
     SHARE_PITCH_CLOSE_BUTTON = "//span[@class='ant-modal-close-x']"
     PERSONAL_PITCH_TRAINER_PASSED_TEXT = "//p[contains(text(), 'Passed')]"

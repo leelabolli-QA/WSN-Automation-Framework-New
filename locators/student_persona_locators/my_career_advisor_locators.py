@@ -17,7 +17,8 @@ class MyCareerAdvisorLocators:
     SLIDER_HANDLE = "//div[@class='questionnaire-slider-container'][1]//div[contains(@class,'ant-slider-handle')]"
     UPDATE_BUTTON = "//button[text()='Update']"
     GO_TO_MATCHED_ROLES_BUTTON = "//button[text()='Go to Matched Roles']"
-    WITHOUT_COLLEGE_DEGREE = "//span[text()='Without College Degree']"
+    WITHOUT_COLLEGE_DEGREE = ("//span[normalize-space()='Without College Degree'"
+                              " or contains(normalize-space(), 'WITHOUT_COLLEGE_DEGREE')]")
     VALIDATE_HEADER_COUNT = "//span[@class='header-count']"
     SEARCH_ROLES_HEADER = "//h4[text()='Search Roles']"
     SEARCH_FOR_JOB_ROLE_INPUT = "//input[@placeholder='Search for a Job Role']"

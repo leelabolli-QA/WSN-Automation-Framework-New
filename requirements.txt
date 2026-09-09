@@ -8,6 +8,9 @@ PyYAML>=6.0
 allure-behave==2.13.5
 allure-python-commons==2.13.5
 
+# Behave HTML report (-f behave_html_formatter:HTMLFormatter in run-report.ps1)
+behave-html-formatter>=0.9.10
+
 # Executive report / PDF generation
 matplotlib>=3.8
 pdfkit>=1.0

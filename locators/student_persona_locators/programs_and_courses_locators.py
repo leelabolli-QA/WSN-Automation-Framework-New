@@ -29,11 +29,19 @@ class ProgramsAndCoursesLocators:
     PROGRAM_CARD = "//div[contains(@class,'learning-item-card--program')]"
     # Courses and programs are listed side by side on the merged screen, so a
     # course-only title selector is needed to avoid opening a program by accident.
-    COURSE_CARD_TITLE = ("//div[contains(@class,'learning-item-card--course')]"
-                         "//h4[contains(@class,'learning-item-card__title')]")
+    COURSE_CARD_TITLE = "//h4[text()='QA-Emp skill Test-V2-Open']"
 
     RESUME_COURSE_BUTTON = ("//button[contains(@class,'learning-item-card__btn')]"
                             "[normalize-space()='Resume Course']")
+    PRE_VIDEO_ICON = "//p[text()='Pre Video']"
+    VALIDATE_PITCH_TRAINER_PRE_VIDEO_ICON = "(//p[text()='Pitch Trainer Pre Video'])[2]"
+    POPUP_CLOSE_BUTTON = "//button[@class='popup-close-btn responsive-drawer__close']"
+    COLLABORATE_ICON = "//p[text()='Collaborate']"
+    POPUP_CLOSE_BUTTON = "//button[@class='popup-close-btn responsive-drawer__close']"
+    ASSESSMENTS_ICON = "//p[text()='Assessments']"
+    POPUP_CLOSE_BUTTON = "//button[@class='popup-close-btn responsive-drawer__close']"
+    POST_VIDEO_ICON = "//p[text()='Post Video']"
+    POPUP_CLOSE_BUTTON = "//button[@class='popup-close-btn responsive-drawer__close']"
     SCORECARD_BUTTON = ("//button[contains(@class,'learning-item-card__btn')]"
                         "[normalize-space()='Scorecard']")
     CERTIFICATE_BUTTON = ("//button[contains(@class,'learning-item-card__btn')]"
