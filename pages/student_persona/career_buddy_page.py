@@ -6,7 +6,7 @@ from utils.logger import log
 # The mentor the Career Buddy scenario books with. "Anand" exists on prod;
 # on dev this account is absent, so a dev run needs a mentor that exists there
 # (e.g. "Leela") or the search returns no mentors at all.
-MENTOR_NAME = "Anand"
+MENTOR_NAME = "Divya"
 SESSION_OUTCOME = "I need help in identifying right path"
 
 

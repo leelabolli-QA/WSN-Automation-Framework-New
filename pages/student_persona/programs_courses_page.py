@@ -1,0 +1,149 @@
+from locators.student_persona_locators.programs_and_courses_locators import (
+    ProgramsAndCoursesLocators as L,
+)
+from pages.student_persona.student_persona_page import CARD_TIMEOUT, StudentPersonaPage
+
+
+class ProgramsCoursesPage(StudentPersonaPage):
+    """Actions for the detailed Programs & Courses student scenario."""
+
+    def open_programs_and_courses(self):
+        self.open_card_from_dashboard(
+            L.PROGRAMS_AND_COURSES_CARD,
+            "Programs & Courses card",
+            ready_locator=L.IN_PROGRESS_TAB,
+        )
+
+    def validate_tabs(self):
+        self.validate_visible(L.IN_PROGRESS_TAB, "In Progress tab", timeout=CARD_TIMEOUT)
+        self.validate_visible(L.COMPLETED_TAB, "Completed tab", timeout=CARD_TIMEOUT)
+
+    def open_in_progress(self):
+        self.click(L.IN_PROGRESS_TAB, "In Progress tab", timeout=CARD_TIMEOUT)
+
+    def validate_enrolled_courses(self):
+        self.validate_visible(L.ENROLLED_COURSE_CARD, "enrolled course card", timeout=CARD_TIMEOUT)
+
+    def open_qa_emp_skill_course(self):
+        self.click(L.COURSE_CARD_TITLE, "QA-Emp skill Test-V2-Open course", timeout=CARD_TIMEOUT)
+        self.validate_visible(L.PRE_VIDEO_ICON, "Pre Video icon", timeout=CARD_TIMEOUT)
+
+    def validate_pre_video_icon(self):
+        self.validate_visible(L.PRE_VIDEO_ICON, "Pre Video icon", timeout=CARD_TIMEOUT)
+
+    def click_pre_video_icon(self):
+        self.click(L.PRE_VIDEO_ICON, "Pre Video icon", timeout=CARD_TIMEOUT)
+
+    def validate_pre_video_popup(self):
+        self.validate_visible(
+            L.VALIDATE_PITCH_TRAINER_PRE_VIDEO_ICON,
+            "Pre Video popup",
+            timeout=CARD_TIMEOUT,
+        )
+
+    def close_popup(self):
+        self.click(L.POPUP_CLOSE_BUTTON, "course activity popup close button", timeout=CARD_TIMEOUT)
+
+    def validate_collaborate_icon(self):
+        self.validate_visible(L.COLLABORATE_ICON, "Collaborate icon", timeout=CARD_TIMEOUT)
+
+    def click_collaborate_icon(self):
+        self.click(L.COLLABORATE_ICON, "Collaborate icon", timeout=CARD_TIMEOUT)
+
+    def validate_collaborate_popup(self):
+        self.validate_visible(L.POPUP_CLOSE_BUTTON, "Collaborate popup", timeout=CARD_TIMEOUT)
+
+    def validate_assessments_icon(self):
+        self.validate_visible(L.ASSESSMENTS_ICON, "Assessments icon", timeout=CARD_TIMEOUT)
+
+    def click_assessments_icon(self):
+        self.click(L.ASSESSMENTS_ICON, "Assessments icon", timeout=CARD_TIMEOUT)
+
+    def validate_assessments_popup(self):
+        self.validate_visible(L.POPUP_CLOSE_BUTTON, "Assessments popup", timeout=CARD_TIMEOUT)
+
+    def validate_post_video_icon(self):
+        self.validate_visible(L.POST_VIDEO_ICON, "Post Video icon", timeout=CARD_TIMEOUT)
+
+    def click_post_video_icon(self):
+        self.click(L.POST_VIDEO_ICON, "Post Video icon", timeout=CARD_TIMEOUT)
+
+    def validate_post_video_popup(self):
+        self.validate_visible(L.POPUP_CLOSE_BUTTON, "Post Video popup", timeout=CARD_TIMEOUT)
+
+    def return_to_course_list(self):
+        self.click(L.COURSE_BACK_BUTTON, "back to Programs & Courses list", timeout=CARD_TIMEOUT)
+        self.validate_visible(L.IN_PROGRESS_TAB, "In Progress tab", timeout=CARD_TIMEOUT)
+
+    def _open_completed_tab(self):
+        """Reset to Completed because course actions return to In Progress."""
+        self.click(L.COMPLETED_TAB, "Completed tab", timeout=CARD_TIMEOUT)
+        self.validate_visible(L.COMPLETED_COURSE_CARD, "completed course card", timeout=CARD_TIMEOUT)
+
+    def open_completed_courses(self):
+        self._open_completed_tab()
+
+    def validate_completed_courses(self):
+        self._open_completed_tab()
+
+    def validate_dev_try_activity_course(self):
+        self._open_completed_tab()
+        self.validate_visible(L.DEV_TRY_ACTIVITY_SELF_SERVE_COURSE_TITLE,
+                              "Dev-Try activity-Self serve course", timeout=CARD_TIMEOUT)
+
+    def resume_dev_try_activity_course(self):
+        self._open_completed_tab()
+        self.click(L.RESUME_COURSE_BUTTON, "Resume Course button", timeout=CARD_TIMEOUT)
+
+    def validate_complete_all_criteria_message(self):
+        self.validate_visible(L.COMPLETE_ALL_CRITERIA_MESSAGE,
+                              "complete all criteria message", timeout=CARD_TIMEOUT)
+
+    def validate_dev_think_course(self):
+        self._open_completed_tab()
+        self.validate_visible(L.DEV_THINK_LTI_OPEN_COURSE_TITLE,
+                              "Dev-Think LTI-Open course", timeout=CARD_TIMEOUT)
+
+    def validate_certificate_button(self):
+        self._open_completed_tab()
+        self.validate_visible(L.VALIDATE_CERTIFICATE_BUTTON,
+                              "Certificate button", timeout=CARD_TIMEOUT)
+
+    def open_first_completed_course(self):
+        self._open_completed_tab()
+        self.click(L.COURSE_COMPLETED_LABEL_2, "Course Completed card", timeout=CARD_TIMEOUT)
+
+    def validate_certificate_panel(self, include_scorecard=False):
+        self.validate_visible(L.COURSE_COMPLETION_PANEL_PREVIEW_IMAGE,
+                              "certificate image", timeout=CARD_TIMEOUT)
+        self.validate_visible(L.SHARE_BUTTON, "Share button", timeout=CARD_TIMEOUT)
+        if include_scorecard:
+            self.validate_visible(L.SCORECARD_DOWNLOAD_LINK,
+                                  "scorecard download link", timeout=CARD_TIMEOUT)
+
+    def validate_hps_test_course(self):
+        self._open_completed_tab()
+        self.validate_visible(L.HPS_TEST_QA2_COURSE_TITLE, "HPS Test-QA2 course", timeout=CARD_TIMEOUT)
+
+    def validate_certificate_and_scorecard_buttons(self):
+        self._open_completed_tab()
+        self.validate_visible(L.VALIDATE_CERTIFICATE_BUTTON_2,
+                              "Certificate button", timeout=CARD_TIMEOUT)
+        self.validate_visible(L.VALIDATE_SCORECARD_BUTTON, "Scorecard button", timeout=CARD_TIMEOUT)
+
+    def validate_recommended_by_institute(self):
+        self.scroll_to_bottom()
+        self.validate_visible(L.RECOMMENDED_BY_INSTITUTE,
+                              "Programs & Courses recommended by institute", timeout=CARD_TIMEOUT)
+
+    def validate_recommended_cards(self):
+        self.validate_visible(L.RECOMMENDED_CARD, "recommended course or program card", timeout=CARD_TIMEOUT)
+
+    def validate_recommended_by_wadhwani(self):
+        self.scroll_to_bottom()
+        self.validate_visible(L.RECOMMENDED_BY_WADHWANI,
+                              "Programs & Courses recommended by Wadhwani Foundation", timeout=CARD_TIMEOUT)
+
+    def validate_join_a_batch(self):
+        self.scroll_to_bottom()
+        self.validate_visible(L.JOIN_A_BATCH, "Join a batch section", timeout=CARD_TIMEOUT)

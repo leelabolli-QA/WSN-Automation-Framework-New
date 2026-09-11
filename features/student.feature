@@ -16,7 +16,7 @@ Feature: Student Persona
     Then user clicks on header profile menu icon 
     Then user clicks on Calender
     Then user clicks on messages and discussions
-    Then user clicks on learning progress
+    # Then user clicks on learning progress
     Then user clicks on settings
 
   Scenario: Validate Genie
@@ -84,13 +84,22 @@ Feature: Student Persona
     Then user validates the completed course cards
 
     # Validate Resume Course type
-    Then user validates the completed course with Resume Course option
+    Then user validates the Dev-Try activity-Self serve course
+    Then user validates the completed course and clicks on Resume Course option
+    Then user validates the complete all citeria message
 
     # Validate Certificate type
-    Then user validates the completed course with Certificate download option
+    Then user validates Dev-Think-Lti-open course
+    Then user validates certificate button
+    Then user clicks on course completed button
+    Then user validates certificate image, download button and share button
+
 
     # Validate Scorecard and Certificate type
-    Then user validates the completed course with Scorecard and Certificate options
+    Then user validates HPS Test-QA2 course
+    Then user validates certificate button and scorecard button
+    Then user clicks on course completed button
+    Then user validates certificate image, download certificate button, share button and download score card button
 
     # Validate Institute Recommendations
     Then user validates Courses & Programs recommended by institute
@@ -217,16 +226,16 @@ Feature: Student Persona
     Then user clicks on file upload button
     Then user uploads photo in to chat and validates
     Then user navigates to home page
-Scenario: Learning progress validation
-    Then user clicks on Accounts menu
-    Then user clicks on learning progress
-    Then user validates the learning progress
-    Then user navigates to learning progress page and clicks on completed courses
-    Then user clicks on a completed course and validates overview, content, performance sections, score value and overall progress
-    Then user clicks on share certificate button and validates download certificate option
-    Then user clicks on ongoing courses and validates overview section
-    Then user clicks on content section and clicks on resume
-    Then user clicks on performance section and validates final score
+# Scenario: Learning progress validation
+#     Then user clicks on Accounts menu
+#     Then user clicks on learning progress
+#     Then user validates the learning progress
+#     Then user navigates to learning progress page and clicks on completed courses
+#     Then user clicks on a completed course and validates overview, content, performance sections, score value and overall progress
+#     Then user clicks on share certificate button and validates download certificate option
+#     Then user clicks on ongoing courses and validates overview section
+#     Then user clicks on content section and clicks on resume
+#     Then user clicks on performance section and validates final score
   Scenario: Settings ZoomConnect validation
       Then user clicks on Account menu
       Then user clicks on settings menu

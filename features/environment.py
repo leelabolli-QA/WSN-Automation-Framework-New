@@ -260,9 +260,9 @@ def before_feature(context, feature):
     scenarios. Resetting per feature stops one feature leaking into the next.
     """
     for module_name, class_name in (
-        ("pages.student_persona.new_user_page", "NewUserPage"),
-        ("pages.student_persona.business_planner_page", "BusinessPlannerPage"),
-        ("pages.student_persona.think_activity_page", "ThinkActivityPage"),
+        ("pages.Newuser.new_user_page", "NewUserPage"),
+        ("pages.Newuser.business_planner_page", "BusinessPlannerPage"),
+        ("pages.Newuser.think_activity_page", "ThinkActivityPage"),
     ):
         try:
             module = __import__(module_name, fromlist=[class_name])
