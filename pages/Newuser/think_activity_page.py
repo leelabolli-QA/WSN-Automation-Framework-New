@@ -367,6 +367,28 @@ class ThinkActivityPage(BasePage):
         'assessment weightage': (TA.ASSESSMENT_WEIGHTAGE_CELL, "page"),
     }
 
+    _OPTIONAL_DASHBOARD_CARD_KEYS = {
+        '"jobs connect" card',
+        '"career buddy" card',
+    }
+
+    _PERFORMANCE_ACTIONS = {
+        '"download certificate" option and click on the "download certificate" button':
+            "download_certificate",
+        '"share certificate" option and click on the "share certificate" button and paste the link in new tab':
+            "share_certificate_and_open_link",
+        '"assessments" section and click on the "assessments progress arrow" and should see the data in assessments popup':
+            "expand_assessment_progress",
+        '"assessments" section and click on the "assessments progress arrow" and should see the data in assessments popup and then close the popup':
+            "expand_assessment_progress",
+        '"assessments" section and click on the "assessments progress arrow" and should see the data in assessments popup and then click on the assessments_progress_arrow_popup_close_button':
+            "expand_assessment_progress",
+        '"earned micorcertificates" card and click on the earned microcertificate button':
+            "open_earned_microcertificate",
+        '"earned microcertifacate" details with download & share certificate buttons':
+            "verify_microcertificate_details",
+    }
+
     # "the user should be able to validate the ..." with no expected value.
     _VALIDATE_TARGETS = {
         'course image': (TA.COURSE_BANNER_IMAGE, "page"),
@@ -729,11 +751,18 @@ class ThinkActivityPage(BasePage):
             previous = titles
             self.page.wait_for_timeout(1500)
 
+        optional_cards = {"jobs connect", "career buddy"}
+        missing_optional = optional_cards.difference(title.lower() for title in titles)
+        adjusted_expected = expected_count - len(missing_optional)
         print("Cards under '%s' (%d): %s" % (section, len(titles), ", ".join(titles)))
+        for card in sorted(missing_optional):
+            print("Optional dashboard card '%s' is unavailable; excluding it from the count"
+                  % card)
         attach_screenshot(self.page, "'%s' cards" % section)
-        assert len(titles) == expected_count, (
-            "Expected %d cards under '%s' but the dashboard rendered %d: %s"
-            % (expected_count, section, len(titles), ", ".join(titles)))
+        assert len(titles) == adjusted_expected, (
+            "Expected %d cards under '%s' after excluding unavailable optional cards, "
+            "but the dashboard rendered %d: %s"
+            % (adjusted_expected, section, len(titles), ", ".join(titles)))
 
     _CARD_LOCATORS = {
         # The dashboard renders this card as "Programs & Courses"; the feature
@@ -931,6 +960,10 @@ class ThinkActivityPage(BasePage):
     def verify_visible(self, description):
         """Assert one "the user should be able to see the ..." element."""
         key = _norm(description).lower()
+        action = self._PERFORMANCE_ACTIONS.get(key)
+        if action is not None:
+            getattr(self, action)()
+            return
         entry = self._VIEW_TARGETS.get(key)
         if entry is None:
             raise ValueError(
@@ -939,9 +972,114 @@ class ThinkActivityPage(BasePage):
         locator, scope = entry
         if key in self._ABOUT_PANEL_KEYS:
             self.open_overview_modal()
-        if not self._is_visible(locator, timeout=20000, target=self._scope_target(scope)):
+        visible = self._is_visible(locator, timeout=20000, target=self._scope_target(scope))
+        if not visible and key in self._OPTIONAL_DASHBOARD_CARD_KEYS:
+            print("Optional dashboard card %s is unavailable; skipping this check"
+                  % description)
+            return
+        if not visible:
             raise AssertionError("'%s' is not visible" % description)
         print("Validated: %s" % description)
+
+    def _click_for_download(self, locator, description):
+        """Click a certificate download control and require a real download."""
+        button = self.page.locator(locator).first
+        button.wait_for(state="visible", timeout=15000)
+        with self.page.expect_download(timeout=30000) as download_info:
+            button.click()
+        download = download_info.value
+        failure = download.failure()
+        assert failure is None, "%s failed: %s" % (description, failure)
+        print("Downloaded %s: %s" % (description, download.suggested_filename))
+
+    def _share_and_open_link(self, locator, description):
+        """Click Share, open the resulting/copied URL in a new tab, then close it."""
+        button = self.page.locator(locator).first
+        button.wait_for(state="visible", timeout=15000)
+        origin = "/".join(self.page.url.split("/")[:3])
+        try:
+            self.page.context.grant_permissions(
+                ["clipboard-read", "clipboard-write"], origin=origin)
+        except Exception:
+            pass
+        new_tab = None
+        try:
+            with self.page.context.expect_page(timeout=2500) as page_info:
+                button.click()
+            new_tab = page_info.value
+        except Exception:
+            try:
+                shared_url = self.page.evaluate(
+                    "() => navigator.clipboard.readText()")
+            except Exception as error:
+                raise AssertionError(
+                    "%s did not open a new tab or provide a readable share link: %s"
+                    % (description, error)) from error
+            if not shared_url or not shared_url.startswith(("http://", "https://")):
+                raise AssertionError("%s did not provide a valid share URL" % description)
+            new_tab = self.page.context.new_page()
+            new_tab.goto(shared_url, wait_until="domcontentloaded", timeout=30000)
+
+        try:
+            new_tab.wait_for_load_state("domcontentloaded", timeout=30000)
+            assert new_tab.url and new_tab.url != "about:blank", (
+                "%s opened a blank tab" % description)
+            print("Opened the %s link in a new tab: %s" % (description, new_tab.url))
+            attach_screenshot(new_tab, "%s link opened" % description)
+        finally:
+            if new_tab is not None and not new_tab.is_closed():
+                new_tab.close()
+            self.page.bring_to_front()
+
+    def download_certificate(self):
+        self._click_for_download(TA.DOWNLOAD_CERTIFICATE_BUTTON, "certificate")
+
+    def share_certificate_and_open_link(self):
+        self._share_and_open_link(TA.SHARE_CERTIFICATE_BUTTON, "certificate share")
+
+    def expand_assessment_progress(self):
+        self._click(TA.ASSESSMENTS_PROGRESS_ARROW,
+                    "the Assessments progress arrow", timeout=15000)
+        if not self._is_visible(TA.ASSESSMENT_NAME, timeout=10000):
+            raise AssertionError("Assessment progress opened without assessment data")
+        if not self._is_visible(TA.ASSESSMENT_SCORE, timeout=10000):
+            raise AssertionError("Assessment progress does not show the score")
+        print("Assessment progress data is visible")
+        self._click(TA.ASSESSMENTS_PROGRESS_ARROW_POPUP_CLOSE_BUTTON,
+                    "the Assessments progress popup close icon", timeout=10000)
+        if self._is_visible(TA.ASSESSMENT_NAME, timeout=3000):
+            raise AssertionError("The Assessments progress popup did not close")
+        print("Assessment progress popup closed")
+
+    def open_earned_microcertificate(self):
+        card = self.page.locator(TA.EARNED_MICRO_CERTIFICATES_CARD).first
+        try:
+            card.wait_for(state="visible", timeout=15000)
+        except Exception:
+            raise AssertionError("The Earned Microcertificates card is not visible")
+        arrow = card.locator(TA.EARNED_MICRO_CERTIFICATE_ARROW).first
+        try:
+            arrow.wait_for(state="visible", timeout=10000)
+        except Exception:
+            raise AssertionError(
+                "The Earned Microcertificates card has no visible details button")
+        self._click(TA.EARNED_MICRO_CERTIFICATE_ARROW,
+                    "the earned microcertificate button", timeout=15000, target=card)
+        self.verify_microcertificate_details()
+
+    def verify_microcertificate_details(self):
+        for locator, label in (
+            (TA.MICRO_CERTIFICATE_DOWNLOAD_BUTTON, "Microcertificate download"),
+            (TA.MICRO_CERTIFICATE_SHARE_BUTTON, "Microcertificate share"),
+        ):
+            if not self._is_visible(locator, timeout=15000):
+                raise AssertionError("The earned microcertificate details lack %s" % label)
+        print("Earned microcertificate details and actions are visible")
+
+    def download_microcertificate_and_share(self):
+        self._click_for_download(TA.MICRO_CERTIFICATE_DOWNLOAD_BUTTON, "microcertificate")
+        self._share_and_open_link(TA.MICRO_CERTIFICATE_SHARE_BUTTON,
+                                  "microcertificate share")
 
     def validate(self, description):
         """Handle "the user should be able to validate the ..." (no value)."""

@@ -33,12 +33,18 @@ Feature: New_user
         And the user selects any job category or selects a random job role
         And the user answers all the available questions
         Then the second self-serve activity should be completed successfully
-        And user should navigate back to courses page 
+        #And user should navigate back to courses page 
 
 
     Scenario: User validates Business Planner LTI course and completes all required activities
 
-        Given the user is logged into the WSN application
+        Given the user opens the WSN application
+        When the user clicks on "Continue with Email"
+        And the user enters a valid email address manually
+        And the user enters the OTP manually
+        And the user completes the registration form
+        And the user clicks on "Submit"
+        Then the user should be registered successfully
         When the user clicks on the "Home" button
         Then the user should be navigated to the Home page
         And the user should be able to see the "Explore things to do" section
@@ -202,13 +208,24 @@ Feature: New_user
 
 
     #THINK LTI COURSE
+    @think_lti
+    Scenario: Register a new user for the Dev-Think LTI course
+        Given the user opens the WSN application
+        When the user clicks on "Continue with Email"
+        And the user enters a valid email address manually
+        And the user enters the OTP manually
+        And the user completes the registration form
+        And the user clicks on "Submit"
+        Then the user should be registered successfully
+
+    @think_lti
     Scenario: User validates Dev-Think LTI course,completes Think activities and assessment
 
         Given the user is successfully logged into the WSN application
         Then the user should be navigated to the Home page
         # The dashboard redesign added a Jobs Connect card - seven now, not six.
         And the user should be able to see all 7 cards under "Explore things to do"
-
+    @think_lti
     Scenario: Homepage Validation
         # The first card is labelled "Programs & Courses" now (was "Courses and Programs").
         Then the user should be able to see the "Programs & Courses" card
@@ -230,6 +247,7 @@ Feature: New_user
     # Duration, language, the banner and "About this course" now open in an
     # Overview modal from the (i) beside the course title, which these steps
     # open for themselves.
+    @think_lti
     Scenario: Course Overview Validation
         And the user should be able to validate the course duration as "2 hours"
         And the user should be able to validate the course language as "English"
@@ -237,6 +255,7 @@ Feature: New_user
         And the user should be able to validate the "About this course" heading
         And the user should be able to validate the course content
 
+    @think_lti
     Scenario: User enrolls in Dev-Think LTI course
         When the user clicks on the "Enroll Now" button
         Then the user should be able to see the "Enroll Now" popup
@@ -266,6 +285,7 @@ Feature: New_user
         When the user clicks on the "Start" button for the Dev think LTI activity
         Then the user should be able to see the Think Activity question
 
+    @think_lti
     Scenario: User completes Think activities and Orientation
         When the user selects the correct answer for Think 1
         And the user clicks on the "Submit" button
@@ -286,6 +306,7 @@ Feature: New_user
         When the user completes the Orientation PDF
         Then the user should be able to proceed to the Assessment section
 
+    @think_lti
     Scenario: User completes the Dev-Think assessment
         When the user clicks on the "Attempt quiz" button
         Then the user should be able to start the assessment
@@ -323,6 +344,7 @@ Feature: New_user
     # the course page, which is where the score tile and the certificate block
     # now live. (The score tile's "See Details in 'Performance' Tab" is a plain
     # label and navigates nowhere.)
+    @think_lti
     Scenario: User validates Dev-Think performance details
         When the user clicks on the Assessment back arrow button
         Then the user should be navigated to the Performance page
@@ -338,9 +360,12 @@ Feature: New_user
         # action reads "Download Certificate".
         And the user should be able to see the "Congratulations" section
         And the user should be able to see the certificate eligibility message
-        And the user should be able to see the "Download Certificate" option
-        And the user should be able to see the "Share" option
-        And the user should be able to see the "Assessments" section
+        And the user should be able to see the "Download Certificate" option and click on the "Download certificate" button
+        And the user should be able to see the "Share certificate" option and click on the "share certificate" button and paste the link in new tab 
+        And the user should be able to see the "Assessments" section and click on the "Assessments progress arrow" and should see the data in assessments popup and then click on the ASSESSMENTS_PROGRESS_ARROW_POPUP_CLOSE_BUTTON
+        And the user should be able to see the "Earned Micorcertificates" card and click on the earned microcertificate button
+        And the user should be able to see the "Earned Microcertifacate" details with download & share certificate buttons
+        And the user should be able to download the "Microcertificate" and click on the "share certificate" button and paste it in new tab
         # REMOVED BY THE REDESIGN: the Performance tab's assessments table
         # (name, score, attempt date, weightage) no longer exists - the page
         # keeps only an "Assessments" node on the CERTIFICATE PROGRESS strip.

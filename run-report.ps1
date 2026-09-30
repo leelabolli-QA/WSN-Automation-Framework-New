@@ -19,7 +19,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $root = $PSScriptRoot
-$python = Join-Path $root ".venv\Scripts\python.exe"
+$python = Join-Path $root "venv\Scripts\python.exe"
 
 # Default feature per persona when not explicitly provided.
 $defaultFeatures = @{

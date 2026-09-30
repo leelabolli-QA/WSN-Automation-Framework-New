@@ -973,7 +973,7 @@ def _main_legacy():
     if run_mode == "single":
         persona = os.getenv("PERSONA", "student").strip().lower()
         default_feature_by_persona = {
-            "student": "features/Student_All.feature",
+            "student": "features/student.feature",
             "faculty": "features/faculty_all.feature",
         }
         feature_path = default_feature_by_persona.get(persona, "features/")

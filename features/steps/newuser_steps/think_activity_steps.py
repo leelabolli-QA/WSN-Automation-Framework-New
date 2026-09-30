@@ -195,3 +195,8 @@ def verify_back_on_assessment(context):
 @when('the user clicks on the Assessment back arrow button')
 def click_assessment_back_arrow(context):
     _page(context).click_assessment_back_arrow()
+
+
+@then('the user should be able to download the "Microcertificate" and click on the "share certificate" button and paste it in new tab')
+def download_and_share_microcertificate(context):
+    _page(context).download_microcertificate_and_share()

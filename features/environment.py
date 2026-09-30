@@ -55,7 +55,19 @@ def _is_newuser_only_run(context):
     assumes an existing, already-verified account).
     """
     paths = getattr(context.config, "paths", None) or []
-    return bool(paths) and all("newuser" in os.path.basename(p).lower() for p in paths)
+    return bool(paths) and all(
+        "newuser" in os.path.basename(p).lower()
+        or os.path.basename(p).lower() == "student_ca.feature"
+        for p in paths
+    )
+
+
+def _is_student_ca_newuser_run(context):
+    """True when the requested run is the CA feature's self-registration flow."""
+    paths = getattr(context.config, "paths", None) or []
+    return bool(paths) and all(
+        os.path.basename(path).lower() == "student_ca.feature" for path in paths
+    )
 
 
 def _new_browser_context(context):
@@ -235,6 +247,7 @@ def before_all(context):
     """Launch the browser and log in once for the whole run."""
     context.persona = Config.get_persona()
     context.skip_shared_login = _is_newuser_only_run(context)
+    context.student_ca_newuser_run = _is_student_ca_newuser_run(context)
 
     context.playwright = sync_playwright().start()
     context.browser = context.playwright.chromium.launch(
@@ -277,6 +290,16 @@ def before_scenario(context, scenario):
     # Their page-object state must survive scenario boundaries, so it is reset
     # per feature (see before_feature) rather than here.
     if getattr(context, "skip_shared_login", False):
+        if getattr(context, "student_ca_newuser_run", False):
+            page = _page(context)
+            ca_url = getattr(context, "student_ca_url", None)
+            if getattr(context, "student_ca_flow_started", False):
+                if ca_url and "/career-advisor/" not in page.current_url():
+                    page.open_url(ca_url)
+                    page.wait_for_load("domcontentloaded", timeout=15000)
+                page.press_escape()
+            elif page.is_visible(ACCOUNTS_MENU, timeout=1000):
+                _student_go_home(context)
         _start_tracing(context)
         return
 

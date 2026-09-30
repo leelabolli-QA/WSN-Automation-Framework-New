@@ -52,13 +52,15 @@ Feature: Student Persona
     # Validate In Progress Course
     When user clicks on the In Progress tab
     Then user validates the enrolled course cards
-    When user opens the "QA-Emp skill Test-V2-Open" course
+    When user opens the "QA-Emp skill Test-V2" course
 
     # Validate Course Detail Page
     Then user validates the course detail page
     Then user validates the Pre Video icon
     Then user clicks on the Pre Video icon
     Then user validates the Pre Video popup
+    Then user clicks on the right arrow button if the pre video not started
+    Then user click on the back navigation arrow button and again clicks on the pre video icon
     Then user closes the Pre Video popup
 
     Then user validates the Collaborate icon
@@ -86,21 +88,32 @@ Feature: Student Persona
     # Validate Resume Course type
     Then user validates the Dev-Try activity-Self serve course
     Then user validates the completed course and clicks on Resume Course option
+    Then user should see the "complete all citeria message" screen and if it's available then user clicks on the "COURSE_CONTENT_BACK_ARROW" and should land on the "complete all citeria message" screen
     Then user validates the complete all citeria message
+    Then user clicks on the "COURSE_BACK_BUTTON" from the "complete all citeria message" screen
+    When user clicks on the Completed tab
+    Then user validates the completed course cards
 
     # Validate Certificate type
     Then user validates Dev-Think-Lti-open course
     Then user validates certificate button
-    Then user clicks on course completed button
-    Then user validates certificate image, download button and share button
-
+    Then user clicks on "Dev-Think-Lti-open" course completed button
+    Then user validates certificate image, download certificate button and share button
+    Then user clicks on the download certificate button
+    Then user clicks on the share button
+    Then user clicks on the scorecard download link if it's available or else skip this
+    Then user navigates back to the Programs & Courses list
 
     # Validate Scorecard and Certificate type
     Then user validates HPS Test-QA2 course
     Then user validates certificate button and scorecard button
-    Then user clicks on course completed button
+    Then user clicks on "HPS Test-QA2"course completed button
     Then user validates certificate image, download certificate button, share button and download score card button
-
+    Then user clicks on the download certificate button
+    Then user clicks on the share button
+    Then user clicks on the scorecard download link if it's available or else skip this
+    Then user navigates back to the Programs & Courses list
+    
     # Validate Institute Recommendations
     Then user validates Courses & Programs recommended by institute
     Then user validates the recommended course and program cards
@@ -274,5 +287,6 @@ Feature: Student Persona
   Scenario: Notifications validation
       Then user clicks on notification icon
       Then user validates the notifications
-      Then user clicks on first notification
+      Then user clicks on first notification  
       Then user navigates to home page
+ 

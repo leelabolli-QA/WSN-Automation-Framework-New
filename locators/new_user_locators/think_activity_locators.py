@@ -274,3 +274,15 @@ class ThinkActivityLocators:
     ASSESSMENT_SCORE = "//div[contains(@class,'score-tooltip-parent')]//span"
     ASSESSMENT_ATTEMPT_DATE = "//span[contains(@class,'attemptDate_text')]"
     ASSESSMENT_WEIGHTAGE_CELL = "//div[contains(@class,'assessment-table')]//tbody//tr/td[4]"
+    ASSESSMENTS_PROGRESS_ARROW ="//span[@class='certificate-progress__label']"
+    ASSESSMENTS_PROGRESS_ARROW_POPUP_CLOSE_BUTTON = (
+        "//button[contains(@class,'popup-close-btn') "
+        "and contains(@class,'responsive-drawer__close')]"
+    )
+    DOWNLOAD_CERTIFICATE_BUTTON="//button[normalize-space()='Download Certificate']"
+    SHARE_CERTIFICATE_BUTTON="//button[normalize-space()='Share']"
+    EARNED_MICRO_CERTIFICATES_CARD = "(//div[@class='earned-micro-certificates'])[1]"
+    EARNED_MICRO_CERTIFICATE_ARROW = "button[aria-label='Earned Micro Certificates']"
+    MICRO_CERTIFICATE_DOWNLOAD_BUTTON="//button[@aria-label='Download']"
+    MICRO_CERTIFICATE_SHARE_BUTTON="//button[@aria-label='Share']"
+    EARNED_MICRO_CERTIFICATE_CLOSE_ARROW="//button[@aria-label='Close']"

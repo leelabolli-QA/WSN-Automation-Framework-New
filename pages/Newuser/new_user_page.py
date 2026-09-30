@@ -290,20 +290,30 @@ class NewUserPage(BasePage):
 
     def enter_email_manually(self):
         page = self.page
-        page.locator(NewUserLocators.EMAIL_INPUT).wait_for(state="visible", timeout=20000)
+        email_field = page.locator(NewUserLocators.EMAIL_INPUT).first
+        email_field.wait_for(state="visible", timeout=20000)
+        # Clear browser autofill or a value left by a previous dev login before
+        # the tester enters the one-time registration email.
+        email_field.fill("")
+        email_field.focus()
         print("\nMANUAL ACTION REQUIRED: enter a valid, not-already-registered email "
-              "address in the browser and click 'Next'. Waiting up to 5 minutes - "
-              "automation resumes as soon as the OTP screen appears.")
-        # Poll the DOM instead of blocking on terminal input() - this only works if the
-        # tester types into the browser directly; there is nothing to type into here.
+              "address in the browser. The script will click 'Next' automatically.")
+        email_next = page.locator(NewUserLocators.NEXT_BUTTON).first
+        email_next.wait_for(state="visible", timeout=300000)
+        self._wait_until_enabled(email_next, attempts=600, interval_ms=500)
+        email_next.click()
         page.locator(NewUserLocators.VERIFY_BUTTON).wait_for(state="visible", timeout=300000)
         attach_screenshot(page, "Email entered manually")
         print("Email submitted manually - OTP screen reached")
 
     def enter_otp_manually(self):
         page = self.page
-        print("\nMANUAL ACTION REQUIRED: enter the OTP received on the email and click 'Verify'. "
-              "Waiting up to 5 minutes - automation resumes as soon as the password screen appears.")
+        print("\nMANUAL ACTION REQUIRED: enter the OTP received on the email. "
+              "The script will click 'Verify' automatically.")
+        verify_button = page.locator(NewUserLocators.VERIFY_BUTTON).first
+        verify_button.wait_for(state="visible", timeout=300000)
+        self._wait_until_enabled(verify_button, attempts=600, interval_ms=500)
+        verify_button.click()
         page.locator(NewUserLocators.NEW_PASSWORD_INPUT).wait_for(state="visible", timeout=300000)
         attach_screenshot(page, "OTP verified manually")
         print("OTP verified manually - password screen reached")
